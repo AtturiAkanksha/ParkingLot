@@ -1,17 +1,19 @@
-﻿using System;
+﻿using  System;
+using System.Collections.Generic;
+
 
 namespace ParkingLot
 {
      class Program
     {
-         public static void Main(string[] args)
+
+        public  static int SlotNumber = 0;
+        public static void Main(string[] args)
         {
-            // ArrayList TwoWeelerArray = new ArrayList();
-            // ArrayList FourWeelerArray = new ArrayList();
-            // ArrayList HeavyVehicleArray = new ArrayList();
+            List<Ticket> TwoWheelerArray = new List<Ticket> ();
+            List<Ticket> FourWheelerArray = new List<Ticket>();
+            List<Ticket> HeavyVehicleArray = new List<Ticket>();
             int VehicleType;
-
-
             Console.WriteLine("Enter no. of slots for TwoWheeler Vehicles:");
             int TwoWheelerCount = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Enter no. of slots for FourWheeler Vehicles:");
@@ -22,8 +24,12 @@ namespace ParkingLot
             Console.WriteLine("slots available for FourWheeler vehicles:" + FourWheelerCount);
             Console.WriteLine("slots available for HeavyVehicles:" + HeavyVehicleCount);
             Console.WriteLine("Welcome to ABC parking");
+           
+            DateTime InTime ;
+
             while (true)
             {
+
                 Console.WriteLine("select any one of the options: \n 1.Display slots available \n 2.Park the vehicle \n 3.Un-park the vehicle");
                 int Option = Convert.ToInt32(Console.ReadLine());
                 switch (Option)
@@ -41,19 +47,19 @@ namespace ParkingLot
                             case 1:
                                 if (TwoWheelerCount > 0)
                                 {
-                                    for (int i = 1; i <= TwoWheelerCount; i++)
-                                    {
-                                        var InTime = DateTime.Now;
-                                        int SlotNumber = i;
+                                   
+                                        InTime = DateTime.Now;
+
+                                        Program.SlotNumber++;
                                         Console.WriteLine("Enter vehicle number:");
                                         string VehicleNumber = Console.ReadLine();
                                         Console.WriteLine("The slot for your vehicle is booked");
                                         Console.WriteLine("vehicle number: " + VehicleNumber);
-                                        Console.WriteLine("slot number:" + i);
-                                        Console.WriteLine("entry time: " + InTime);
-                                    }
-                                    TwoWheelerCount -= 1;
-                                    Console.WriteLine(TwoWheelerCount);
+                                        Console.WriteLine("slot number:" + SlotNumber);
+                                        Console.WriteLine("entry: " + InTime);
+                                        TwoWheelerArray.Add(new Ticket { VehicleNumber = VehicleNumber, SlotNumber = Convert.ToString(SlotNumber), EntryTime = Convert.ToString(InTime)});                                 
+                                    Console.WriteLine("press enter to display main menu");
+                                        TwoWheelerCount -= 1;
                                 }
                                 else
                                 {
@@ -64,28 +70,48 @@ namespace ParkingLot
                             case 2:
                                 if (FourWheelerCount > 0)
                                 {
-                                    for (int i = 1; i <= FourWheelerCount; i++)
-                                    {
-                                        var InTime = DateTime.Now;
-                                        int SlotNumber = i;
-                                        Console.WriteLine("Enter vehicle number:");
-                                        string VehicleNumber = Console.ReadLine();
-                                        Console.WriteLine("The slot for your vehicle is booked");
-                                        Console.WriteLine("vehicle number: " + VehicleNumber);
-                                        Console.WriteLine("slot number:" + i);
-                                        Console.WriteLine("entry time: " + InTime);
 
-                                    }
+                                    InTime = DateTime.Now;
+
+                                    Program.SlotNumber++;
+                                    Console.WriteLine("Enter vehicle number:");
+                                    string VehicleNumber = Console.ReadLine();
+                                    Console.WriteLine("The slot for your vehicle is booked");
+                                    Console.WriteLine("vehicle number: " + VehicleNumber);
+                                    Console.WriteLine("slot number:" + SlotNumber);
+                                    Console.WriteLine("entry: " + InTime);
+                                    FourWheelerArray.Add(new Ticket { VehicleNumber = VehicleNumber, SlotNumber = Convert.ToString(SlotNumber), EntryTime = Convert.ToString(InTime) });
+                                    Console.WriteLine("press enter to display main menu");
                                     FourWheelerCount -= 1;
-                                    Console.WriteLine(FourWheelerCount);
                                 }
                                 else
                                 {
                                     Console.WriteLine("sorry! no slots for two weeler");
                                 }
+
                                 break;
                             case 3:
-                                Console.WriteLine("Case 3");
+                                if (HeavyVehicleCount > 0)
+                                {
+
+                                    InTime = DateTime.Now;
+
+                                    Program.SlotNumber++;
+                                    Console.WriteLine("Enter vehicle number:");
+                                    string VehicleNumber = Console.ReadLine();
+                                    Console.WriteLine("The slot for your vehicle is booked");
+                                    Console.WriteLine("vehicle number: " + VehicleNumber);
+                                    Console.WriteLine("slot number:" + SlotNumber);
+                                    Console.WriteLine("entry: " + InTime);
+                                    HeavyVehicleArray.Add(new Ticket { VehicleNumber = VehicleNumber, SlotNumber = Convert.ToString(SlotNumber), EntryTime = Convert.ToString(InTime) });
+                                    Console.WriteLine("press enter to display main menu");
+                                    HeavyVehicleCount -= 1;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("sorry! no slots for two weeler");
+                                }
+
                                 break;
                             default:
                                 Console.WriteLine("Value didn't match earlier.");
@@ -93,20 +119,78 @@ namespace ParkingLot
                         }
                         break;
                     case 3:
-                    //comment45
-                    //console.writeline("vehicle number: " + vehiclenumber);
-                    //console.writeline("slot number:" + i);
-                    //console.writeline("entry time: " + intime);
-                    //var outtime = datetime.now;
-                    //console.writeline("exit time: " + outtime);
-                    //console.writeline(vehiclenumber);
+                        Console.WriteLine("Enter vehicle number:");
+                        string VehicleNumberCheck = Console.ReadLine();
+                       
+                        foreach (Ticket ticket in TwoWheelerArray.ToList())
+                        {
+                            if (ticket.VehicleNumber == VehicleNumberCheck)
+                            {
+                                Console.WriteLine("Your Vehicle is unparked");
+                                TwoWheelerArray.Remove(ticket);
+                                SlotNumber--;
+                                Console.WriteLine(SlotNumber);
+                                TwoWheelerCount++;
+                                Console.WriteLine(TwoWheelerArray.Count);
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("there is no vehicle with following details");
+                            }
+                        }
+                        
+
+                        foreach (Ticket ticket in FourWheelerArray.ToList())
+                        {
+                            if (ticket.VehicleNumber == VehicleNumberCheck)
+                            {
+                                Console.WriteLine("Your Vehicle is unparked");
+                                FourWheelerArray.Remove(ticket);
+                                SlotNumber--;
+                                FourWheelerCount++;
+                            }
+                            else
+                            {
+                                Console.WriteLine("there is no vehicle with following details");
+                            }
+                        }
+                        
+
+                        foreach (Ticket ticket in HeavyVehicleArray.ToList())
+                        {
+                            if (ticket.VehicleNumber == VehicleNumberCheck)
+                            {
+                                Console.WriteLine("Your Vehicle is unparked");
+                                HeavyVehicleArray.Remove(ticket);
+                                HeavyVehicleCount++;
+                                SlotNumber--;
+                            }
+                            else
+                            {
+                                Console.WriteLine("there is no vehicle with following details");
+                            }
+                        }
+                        break;
+
                     default:
                         Console.WriteLine("Value didn't match earlier.");
                         break;
                 }
                 Console.ReadLine();
             }
-
+        }
+        public class Ticket
+        {
+            public string VehicleNumber { get; set; }
+            public string SlotNumber { get; set; }
+            public string EntryTime { get; set; }
         }
     }
+    
+
 }
+
+
+
+
