@@ -131,8 +131,6 @@ namespace ParkingLot
                                 SlotNumber--;
                                 Console.WriteLine(SlotNumber);
                                 TwoWheelerCount++;
-                                Console.WriteLine(TwoWheelerArray.Count);
-
                             }
                             else
                             {
